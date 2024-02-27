@@ -23,9 +23,29 @@
             height: 100%; /* Hauteur complète */
             border: none; /* Supprime les bordures de l'iframe */
         }
-    </style>
+ </style>
+    <script>
+        // Fonction pour récupérer les paramètres de l'URL
+        function getParameterByName(name, url = window.location.href) {
+            name = name.replace(/[\[\]]/g, '\\$&');
+            var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+                results = regex.exec(url);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, ' '));
+        }
+
+        // Fonction pour mettre à jour l'URL de l'iframe avec les paramètres récupérés
+        function updateIframeSrc() {
+            var nom = getParameterByName('nom');
+            var date = getParameterByName('date');
+            var nom_planning = getParameterByName('nom_planning');
+            var iframeSrc = `https://tiptoque.typeform.com/to/bbd5ci41#nom=${nom}&date=${date}&nom_planning=${nom_planning}`;
+            document.getElementById('typeform-iframe').src = iframeSrc;
+        }
+    </script>
 </head>
-<body>
-    <iframe src="https://tiptoque.typeform.com/to/bbd5ci41#nom=xxxxx&date=xxxxx&nom_planning=xxxxx" frameborder="0" allowfullscreen></iframe>
+<body onload="updateIframeSrc();"> <!-- Appelle la fonction au chargement de la page -->
+    <iframe id="typeform-iframe" frameborder="0" allowfullscreen></iframe>
 </body>
 </html>
